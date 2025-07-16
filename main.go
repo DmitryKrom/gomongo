@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	// Checking github ssh again
+	// Checking github ssh again nochmal
 	mongoConn := options.Client().ApplyURI("mongodb://127.0.0.1:27017/")
 	ctx := context.Background()
 	client, err := mongo.Connect(ctx, mongoConn)
