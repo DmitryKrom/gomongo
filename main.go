@@ -23,16 +23,16 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	ctx := context.Background()	
+	ctx := context.Background()
 	dbs, err := client.ListDatabaseNames(ctx, bson.M{})
-	if err != nil{
+	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println("DATABASES: ", dbs)
 
 	mogodb := client.Database("mogodb")
 	languages := mogodb.Collection("languages")
-	
+
 	result, err := languages.InsertOne(ctx, bson.D{{Key: "ID", Value: 1}, {Key: "name", Value: "Golang"}})
 	if err != nil {
 		log.Fatal(err)
@@ -102,6 +102,24 @@ func main() {
 	}
 	fmt.Println("filtered Golang:")
 	print(lan)
+	fmt.Println("###################################")
+	gonews := client.Database("gonews")
+	fmt.Println("gonews DATABASE ")
+	gonewsColl := gonews.Collection("news")
+	fmt.Println("gonews Collection news ????")
+	res, _ := gonews.ListCollectionNames(ctx, bson.D{{"options.capped", true}})
+
+	fmt.Println("gonews: ", res)
+	cur, err := gonewsColl.Find(ctx, bson.M{})
+	if err != nil {
+		fmt.Println("gonewsColl ERROR ")
+		log.Fatal(err)
+	}
+
+	for cur.Next(ctx) {
+		fmt.Println("next")
+	}
+
 }
 func print(a []bson.M) {
 	for _, val := range a {
