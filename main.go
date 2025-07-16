@@ -12,18 +12,18 @@ import (
 
 func main() {
 	mongoConn := options.Client().ApplyURI("mongodb://127.0.0.1:27017/")
-	client, err := mongo.Connect(context.Background(), mongoConn)
+	ctx := context.Background()
+	client, err := mongo.Connect(ctx, mongoConn)
 	if err != nil {
 		log.Fatal(err)
 	}
 	// не забываем закрывать ресурсы
-	defer client.Disconnect(context.Background())
+	defer client.Disconnect(ctx)
 	// проверка связи с БД
-	err = client.Ping(context.Background(), nil)
+	err = client.Ping(ctx, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	ctx := context.Background()
 	dbs, err := client.ListDatabaseNames(ctx, bson.M{})
 	if err != nil {
 		log.Fatal(err)
